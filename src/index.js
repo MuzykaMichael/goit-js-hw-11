@@ -8,8 +8,7 @@ import { createMarkup } from './functions.js'
 let pageParams = 1;
 let isCanLoad = false;
 let searchVal;
-
-refs.formEl.addEventListener('submit', function (event) {
+refs.formEl.addEventListener('submit',async function (event) {
   
     event.preventDefault();
 
@@ -24,7 +23,7 @@ refs.formEl.addEventListener('submit', function (event) {
 
     pageParams = 1;
 
-    axios({
+    await axios({
         method: 'get',
         url: 'https://pixabay.com/api/',
         params: {
@@ -56,18 +55,18 @@ refs.formEl.addEventListener('submit', function (event) {
         })
     });
 
-window.addEventListener('scroll', function () {
- 
-  if((document.body.offsetHeight-window.innerHeight) <= window.pageYOffset && isCanLoad == true){
-    loadMoreImgs();
+window.addEventListener('scroll', async function listenerScroll () {
+
+    if((document.body.offsetHeight-window.innerHeight) <= window.pageYOffset && isCanLoad == true){
+    await loadMoreImgs();
   }
 })
 
 function loadMoreImgs() {
     
-  pageParams += 1;
+  
 
-  axios({
+    axios({
       method: 'get',
       url: 'https://pixabay.com/api/',
       params: {
@@ -81,14 +80,17 @@ function loadMoreImgs() {
       }  
   })
   .then(function (response) {
-      
+    if ( pageParams*refs.PER_PAGE >= response.data.totalHits ) { 
+        Notiflix.Report.info("We're sorry, but you've reached the end of search results.")
+        window.removeEventListener("scroll",listenerScroll())
+        return;
+    }
+    pageParams += 1;
     createMarkup(response.data.hits);
        
-        refs.lightbox.refresh(); 
+    refs.lightbox.refresh(); 
+    
 
-      if ( pageParams == Math.ceil(response.data.totalHits / refs.PER_PAGE) ) { 
-          Notiflix.Report.info("We're sorry, but you've reached the end of search results.");
-      }
   })
   
   .catch(function (error) {

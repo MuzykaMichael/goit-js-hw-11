@@ -5,11 +5,12 @@ export function createMarkup(imgArr) {
       refs.galleryEl.insertAdjacentHTML(
 
           'beforeEnd',
-          `<div class="photo-card">
+          `<a class="photo-card" href="${el.largeImageURL}">
+          <div>
 
-          <a class="photo" href="${el.webformatURL}">
-          <img src="${el.webformatURL}" alt="${el.tags}" loading="lazy" width='480' height='320'/>
-          </a>
+          
+          <img src=${el.webformatURL} alt=${el.tags} title=${el.tags} loading="lazy" width='480' height='320'/>
+          </div>
 
           <div class="info">
             <p class="info-item">
@@ -25,7 +26,7 @@ export function createMarkup(imgArr) {
               <b>Downloads: ${el.downloads}</b>
             </p>
           </div>
-        </div>`
+        </a>`
       );
     });
 }

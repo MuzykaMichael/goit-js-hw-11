@@ -4,8 +4,13 @@
 }
 
 .gallery {
-  flex-direction: column;
+  flex-flow: wrap;
   display: flex;
+}
+
+.photo-card {
+  margin-left: 26px;
+  padding-bottom: 26px;
 }
 
 .load-more {
@@ -29,16 +34,12 @@
   margin-left: 26px;
 }
 
-.photo-card {
-  margin-left: 26px;
-  padding-bottom: 26px;
-}
-
 .info-item {
   color: #302b21;
   margin-top: 0;
   margin-bottom: 0;
   line-height: 2;
+  text-decoration: none;
 }
 
 /*# sourceMappingURL=index.4d663569.css.map */

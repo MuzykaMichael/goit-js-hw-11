@@ -516,7 +516,7 @@ var _functionsJs = require("./functions.js");
 let pageParams = 1;
 let isCanLoad = false;
 let searchVal;
-(0, _dataJs.refs).formEl.addEventListener("submit", function(event) {
+(0, _dataJs.refs).formEl.addEventListener("submit", async function(event) {
     event.preventDefault();
     (0, _dataJs.refs).galleryEl.innerHTML = "";
     searchVal = event.target.searchQuery.value;
@@ -525,7 +525,7 @@ let searchVal;
         return;
     }
     pageParams = 1;
-    (0, _axiosDefault.default)({
+    await (0, _axiosDefault.default)({
         method: "get",
         url: "https://pixabay.com/api/",
         params: {
@@ -549,11 +549,10 @@ let searchVal;
         console.log(error);
     });
 });
-window.addEventListener("scroll", function() {
-    if (document.body.offsetHeight - window.innerHeight <= window.pageYOffset && isCanLoad == true) loadMoreImgs();
+window.addEventListener("scroll", async function listenerScroll() {
+    if (document.body.offsetHeight - window.innerHeight <= window.pageYOffset && isCanLoad == true) await loadMoreImgs();
 });
 function loadMoreImgs() {
-    pageParams += 1;
     (0, _axiosDefault.default)({
         method: "get",
         url: "https://pixabay.com/api/",
@@ -567,9 +566,14 @@ function loadMoreImgs() {
             page: pageParams
         }
     }).then(function(response) {
+        if (pageParams * (0, _dataJs.refs).PER_PAGE >= response.data.totalHits) {
+            (0, _notiflixDefault.default).Report.info("We're sorry, but you've reached the end of search results.");
+            window.removeEventListener("scroll", listenerScroll());
+            return;
+        }
+        pageParams += 1;
         (0, _functionsJs.createMarkup)(response.data.hits);
         (0, _dataJs.refs).lightbox.refresh();
-        if (pageParams == Math.ceil(response.data.totalHits / (0, _dataJs.refs).PER_PAGE)) (0, _notiflixDefault.default).Report.info("We're sorry, but you've reached the end of search results.");
     }).catch(function(error) {
         console.log(error);
     });
@@ -7205,7 +7209,7 @@ const refs = {
     formEl: document.querySelector(".search-form"),
     galleryEl: document.querySelector(".gallery"),
     //const moreBtnEl = document.querySelector('.load-more');
-    PER_PAGE: 4,
+    PER_PAGE: 40,
     lightbox: new SimpleLightbox(".gallery a")
 };
 
@@ -7216,11 +7220,12 @@ parcelHelpers.export(exports, "createMarkup", ()=>createMarkup);
 var _dataJs = require("./data.js");
 function createMarkup(imgArr) {
     imgArr.forEach((el)=>{
-        (0, _dataJs.refs).galleryEl.insertAdjacentHTML("beforeEnd", `<div class="photo-card">
+        (0, _dataJs.refs).galleryEl.insertAdjacentHTML("beforeEnd", `<a class="photo-card" href="${el.largeImageURL}">
+          <div>
 
-          <a class="photo" href="${el.webformatURL}">
-          <img src="${el.webformatURL}" alt="${el.tags}" loading="lazy" width='480' height='320'/>
-          </a>
+          
+          <img src=${el.webformatURL} alt=${el.tags} title=${el.tags} loading="lazy" width='480' height='320'/>
+          </div>
 
           <div class="info">
             <p class="info-item">
@@ -7236,7 +7241,7 @@ function createMarkup(imgArr) {
               <b>Downloads: ${el.downloads}</b>
             </p>
           </div>
-        </div>`);
+        </a>`);
     });
 }
 

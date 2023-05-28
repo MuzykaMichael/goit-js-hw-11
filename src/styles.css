@@ -3,15 +3,19 @@
 .search-form {
     padding-left: 26px;
     background-color:aqua;
+    
   }
 
 .gallery {
     display:flex;
-    flex-direction: column;
-    
+    flex-wrap: wrap;
+    flex-direction: row;
 }
-
-  .load-more {
+.photo-card {
+  margin-left: 26px;
+  padding-bottom: 26px;
+}
+.load-more {
     visibility: hidden;
     margin-left: 250px;
     width: 150px;
@@ -24,25 +28,23 @@
   
   }
   
-  .load-more:hover {
+.load-more:hover {
     box-shadow:0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
   
   }
   
-  .main-title {
+.main-title {
   margin-left: 26px;
   margin-top: 0;
   }
   
-  .photo-card {
-    margin-left: 26px;
-    padding-bottom: 26px;
-  }
+
   
+
   .info-item {
     color:rgb(48, 43, 33);
     line-height: 2;
     margin-top: 0;
     margin-bottom: 0;
-  
+    text-decoration: none;
   }

@@ -5,7 +5,7 @@ export const refs = {
     formEl: document.querySelector('.search-form'),
     galleryEl: document.querySelector('.gallery'),
     //const moreBtnEl = document.querySelector('.load-more');
-    PER_PAGE: 4,
+    PER_PAGE: 40,
     lightbox: new SimpleLightbox('.gallery a')
     
     }

@@ -11,6 +11,7 @@
 .photo-card {
   margin-left: 26px;
   padding-bottom: 26px;
+  text-decoration: none;
 }
 
 .load-more {
@@ -39,7 +40,6 @@
   margin-top: 0;
   margin-bottom: 0;
   line-height: 2;
-  text-decoration: none;
 }
 
 /*# sourceMappingURL=index.4d663569.css.map */
